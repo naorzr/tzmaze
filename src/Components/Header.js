@@ -7,12 +7,13 @@ import {
   StyleSheet
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Footer from "./Footer";
 
 class Header extends React.PureComponent {
   render() {
-    const { title, dispBackBtn } = this.props;
+    const { title, dispBackBtn, containerStyle } = this.props;
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container,containerStyle]}>
         {dispBackBtn ? (
           <TouchableOpacity onPress={() => {}}>
             <Icon name="chevron-left" size={20} />
