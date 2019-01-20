@@ -11,11 +11,11 @@ import Footer from "./Footer";
 
 class Header extends React.PureComponent {
   render() {
-    const { title, dispBackBtn, containerStyle } = this.props;
+    const { title, dispBackBtn, containerStyle,onBackButtonPress } = this.props;
     return (
       <SafeAreaView style={[styles.container,containerStyle]}>
         {dispBackBtn ? (
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={onBackButtonPress}>
             <Icon name="chevron-left" size={20} />
           </TouchableOpacity>
         ) : (
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "#90ee02",
+    backgroundColor: "#700605",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 10
