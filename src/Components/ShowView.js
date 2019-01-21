@@ -1,15 +1,13 @@
 import React from "react";
-import { Image, Text, TouchableOpacity } from "react-native";
+import { Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 export default class ShowView extends React.PureComponent {
   render() {
     const { id, name, summary, image, rating, onPress } = this.props;
+    const avg = rating.average;
 
     return (
-      <TouchableOpacity
-        style={{ display: "flex", flexDirection: "column" }}
-        onPress={onPress}
-      >
+      <TouchableOpacity style={styles.container} onPress={onPress}>
         <Image
           resizeMode="contain"
           style={{
@@ -18,16 +16,7 @@ export default class ShowView extends React.PureComponent {
           }}
           source={{ uri: image.original }}
         />
-        <Text
-          style={{
-            flex: 2,
-            color: "white",
-            backgroundColor: "#700605",
-            textAlign: "center"
-          }}
-        >
-          {name}
-        </Text>
+        <Text style={styles.name}>{name}</Text>
         <Text
           style={{
             flex: 2,
@@ -35,8 +24,18 @@ export default class ShowView extends React.PureComponent {
             backgroundColor: "#600000",
             textAlign: "center"
           }}
-        >{`${rating.average}/10`}</Text>
+        >{`${Math.floor(avg) === avg ? avg : avg.toFixed(1)}/10`}</Text>
       </TouchableOpacity>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: { display: "flex", flexDirection: "column" },
+  name: {
+    flex: 2,
+    color: "white",
+    backgroundColor: "#700605",
+    textAlign: "center"
+  }
+});
