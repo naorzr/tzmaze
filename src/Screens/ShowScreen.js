@@ -1,44 +1,48 @@
 import React, { Component } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import DetailedShowView from "../Components/DetailedShowView";
+import { BackHandler } from "react-native";
 
 // Todo: Inspect the react-navigator header support
 
-
 export default class MainScreen extends Component {
+  didFocusSubscription;
+  willBlurSubscription;
+
   constructor(props) {
     super(props);
-    this.state = { data: [], page: 0, isFetching: false };
+    this.didFocusSubscription = props.navigation.addListener(
+      "didFocus",
+      payload =>
+        BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.onBackButtonPress
+        )
+    );
   }
-  async componentDidMount() {
-    console.log("did mount");
-    this.setState({ isFetching: true });
-    const res = await fetch("http://api.tvmaze.com/shows?page=0");
-    console.log("res", res);
-    if (res.ok) {
-      const curPag = this.state.page;
-      const body = await res.json();
-      console.log("body", body[0]);
-      this.setState({
-        isFetching: false,
-        data: this.state.data.concat(body),
-        page: curPag + 1
-      });
-    }
-    this.setState({
-      isFetching: false
-    });
+
+  componentDidMount() {
+    this.willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload =>
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          this.onBackButtonPress
+        )
+    );
   }
+
+  componentWillUnmount() {
+    this.didFocusSubscription && this.didFocusSubscription.remove();
+    this.willBlurSubscription && this.willBlurSubscription.remove();
+  }
+
+  onBackButtonPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
 
   render() {
     const params = this.props.navigation.state.params;
@@ -52,7 +56,7 @@ export default class MainScreen extends Component {
         <Header
           title={name}
           dispBackBtn={true}
-          onBackButtonPress={() => this.props.navigation.goBack()}
+          onBackButtonPress={this.onBackButtonPress}
         />
         <View style={styles.content}>
           <DetailedShowView {...params.show} />
