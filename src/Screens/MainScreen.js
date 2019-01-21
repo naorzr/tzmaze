@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import { Dimensions } from "react-native";
 import ShowView from "../Components/ShowView";
 
 // Todo: Inspect the react-navigator header support
@@ -29,37 +28,34 @@ export default class MainScreen extends Component {
         <Header title={"TV-MAZE"} />
         <View style={styles.content}>
           <Modal visible={this.state.isFetching} transparent={true}>
-            <View
-              style={{
-                display: "flex",
-                flex: 1,
-                justifyContent: "center",
-                alignContent: "center"
-              }}
-            >
+            <View style={styles.modalView}>
               <ActivityIndicator size="large" color="white" />
             </View>
           </Modal>
           <FlatList
             data={this.state.data}
-            renderItem={({ item }) => (
-              <ShowView
-                onPress={this.onShowPress(item)}
-                rating={item.rating}
-                image={item.image}
-                id={item.id}
-                name={item.name}
-                summary={item.summary}
-              />
-            )}
-            keyExtractor={({ id }) => id + ""}
+            renderItem={this.renderItem}
+            keyExtractor={this.keyExtractor}
             onEndReached={this.fetchShowItems}
+            removeClippedSubviews={true}
           />
         </View>
         <Footer />
       </View>
     );
   }
+
+  keyExtractor = ({ id }) => id + "";
+  renderItem = ({ item }) => (
+    <ShowView
+      onPress={this.onShowPress(item)}
+      rating={item.rating}
+      image={item.image}
+      id={item.id}
+      name={item.name}
+      summary={item.summary}
+    />
+  );
 
   fetchShowItems = async () => {
     this.setState({ isFetching: true });
@@ -81,13 +77,28 @@ export default class MainScreen extends Component {
   };
 
   onShowPress = item => {
-    const { id, name, summary, image } = item;
+    const {
+      id,
+      name,
+      summary,
+      image,
+      rating,
+      schedule,
+      genres,
+      network,
+      language
+    } = item;
     return () =>
       this.props.navigation.navigate("Show", {
         show: {
           id,
           name,
+          genres,
           summary,
+          rating,
+          network,
+          language,
+          schedule,
           image: image.original
         }
       });
@@ -100,6 +111,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     backgroundColor: "#212121"
+  },
+  modalView: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center"
   },
   content: {
     flex: 12,
