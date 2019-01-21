@@ -27,7 +27,7 @@ export default class MainScreen extends Component {
       <View style={styles.container}>
         <Header title={"TV-MAZE"} />
         <View style={styles.content}>
-          <Modal visible={this.state.isFetching} transparent={true}>
+          <Modal visible={this.state.isFetching} transparent={true} onRequestClose={() => {}}>
             <View style={styles.modalView}>
               <ActivityIndicator size="large" color="white" />
             </View>
