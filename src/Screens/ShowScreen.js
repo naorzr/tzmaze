@@ -3,23 +3,17 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   View
 } from "react-native";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import { Dimensions } from "react-native";
+import DetailedShowView from "../Components/DetailedShowView";
 
 // Todo: Inspect the react-navigator header support
 
-export function dimensionPercToPixel(
-  perc: number,
-  dimension: "width" | "height"
-): number {
-  const screenDimension = Dimensions.get("window")[dimension];
-  return (screenDimension * perc) / 100;
-}
 
 export default class MainScreen extends Component {
   constructor(props) {
@@ -47,17 +41,22 @@ export default class MainScreen extends Component {
   }
 
   render() {
-    const params = this.props.navigation.state.params
-    if(!params || !params.show){
-      return
+    const params = this.props.navigation.state.params;
+    if (!params || !params.show) {
+      return;
       // Todo: display error message, and allow the user to return to the back page
     }
-    console.log('shpw',params.show);
-    const {id,name,summary,image} = params.show
+    const { name } = params.show;
     return (
       <View style={styles.container}>
-        <Header title={name} dispBackBtn={true} onBackButtonPress={() => this.props.navigation.goBack()}/>
-        <View style={styles.content} />
+        <Header
+          title={name}
+          dispBackBtn={true}
+          onBackButtonPress={() => this.props.navigation.goBack()}
+        />
+        <View style={styles.content}>
+          <DetailedShowView {...params.show} />
+        </View>
         <Footer />
       </View>
     );
@@ -74,8 +73,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 12,
     justifyContent: "center",
-    backgroundColor: "#212121",
-    paddingHorizontal: 30,
-    paddingVertical: 60
+    backgroundColor: "#212121"
   }
 });
