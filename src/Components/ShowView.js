@@ -11,7 +11,7 @@ export default class ShowView extends React.PureComponent {
     return (
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <Image
-          resizeMode="contain"
+          resizeMode="cover"
           style={{
             flex: 4,
             aspectRatio: 8 / 12
@@ -29,7 +29,7 @@ export default class ShowView extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  container: { display: "flex", flexDirection: "column" },
+  container: { display: "flex", flexDirection: "column",marginBottom: 30 },
   name: {
     flex: 2,
     color: "white",
