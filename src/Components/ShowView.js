@@ -1,5 +1,7 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Image, Text, TouchableOpacity, StyleSheet, View } from "react-native";
+import StarRating from "react-native-star-rating";
+import AvgRating from "./AvgRating";
 
 export default class ShowView extends React.PureComponent {
   render() {
@@ -17,14 +19,10 @@ export default class ShowView extends React.PureComponent {
           source={{ uri: image.original }}
         />
         <Text style={styles.name}>{name}</Text>
-        <Text
-          style={{
-            flex: 2,
-            color: "white",
-            backgroundColor: "#600000",
-            textAlign: "center"
-          }}
-        >{`${Math.floor(avg) === avg ? avg : avg.toFixed(1)}/10`}</Text>
+        <AvgRating
+          avgRating={avg}
+          containerStyle={{ flex: 2, backgroundColor: "#600000" }}
+        />
       </TouchableOpacity>
     );
   }

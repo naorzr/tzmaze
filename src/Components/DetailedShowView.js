@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import HTML from "react-native-render-html";
+import AvgRating from "./AvgRating";
 
 export default props => {
   const { summary, image, rating, schedule, genres, network, language } = props;
@@ -22,9 +23,10 @@ export default props => {
         />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.text}>{`Avg Rating   ${
-          Math.floor(avg) === avg ? avg : avg.toFixed(1)
-        }/10`}</Text>
+        <AvgRating
+          avgRating={avg}
+          containerStyle={{ backgroundColor: "teal" }}
+        />
         <View>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.text}>
